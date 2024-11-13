@@ -1,9 +1,14 @@
+import { useRouter } from "next/navigation";
 import React from "react";
 
 function Header() {
+  const router = useRouter();
   return (
     <div className=" w-screen grid grid-cols-7 relative z-10">
-      <div className=" text-red-600 font-bold text-4xl w-screen px-12 py-4">
+      <div
+        className=" text-red-600 font-bold text-4xl w-screen px-12 py-4 hover:cursor-pointer"
+        onClick={() => router.push("/")}
+      >
         {" "}
         NETFLEX
       </div>

@@ -49,7 +49,7 @@ export default function Home() {
             value={movieName}
             onChange={(event) => setMovieName(event.target.value)}
             placeholder="Enter Moviename"
-            className=" row-start-5 h-12 col-start-2 w-56 font-bold rounded-lg p-2 lg:col-start-3 lg:w-72 lg:bg-gray-800 text-white"
+            className=" row-start-5 h-12 col-start-2 w-56 font-bold rounded-lg p-2 lg:col-start-3 lg:w-72 lg:bg-gray-800 lg:text-white text-black"
           />
 
           <button
