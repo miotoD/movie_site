@@ -1,101 +1,65 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import Header from "./components/header";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useMovie } from "./context";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  let [movieName, setMovieName] = useState("");
+  const { setMovieData } = useMovie(); // access setMovieData from context
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  let baseUrl = `http://www.omdbapi.com/?t=${movieName}&apikey=2ed15137`; // base url
+
+  let router = useRouter();
+
+  function handleSearch() {
+    axios.get(baseUrl).then((resp) => {
+      console.log(resp.data);
+      setMovieData(resp.data);
+      setMovieName("");
+      router.push("/movieDetail");
+    });
+  }
+
+  return (
+    <>
+      <div
+        className="relative h-screen w-screen bg-cover bg-center"
+        style={{ backgroundImage: "url('/bg.webp')" }}
+      >
+        <div className="absolute inset-0 bg-black opacity-60 z-0"></div>
+        <Header />
+
+        <div className=" w-full h-96 mt-24 relative z-10 grid grid-rows-5 grid-cols-5">
+          <h1 className=" text-white font-bold text-3xl col-start-2 col-span-3 row-start-2 lg:text-5xl">
+            Unlimited movies, TV shows and more
+          </h1>
+          <p className="text-white text-md col-start-2 col-span-4 row-start-3 mt-8 font-semibold lg:col-start-3">
+            Starts at USD 2.99. Cancel anytime.
+          </p>
+
+          <p className="text-white text-sm mt-8 col-start-3 col-span-3 row-start-4 font-semibold lg:text-2xl lg:-ml-28 lg:-mt-2  lg:col-start-3">
+            Ready to watch? Enter the movie title to get started.
+          </p>
+
+          <input
+            type="text"
+            value={movieName}
+            onChange={(event) => setMovieName(event.target.value)}
+            placeholder="Enter Moviename"
+            className=" row-start-5 h-12 col-start-2 w-56 font-bold rounded-lg p-2 lg:col-start-3 lg:w-72 lg:bg-gray-800 text-white"
+          />
+
+          <button
+            className=" bg-red-500 text-white h-7 rounded-md w-20 row-start-5 col-start-5  -ml-4 lg:col-start-4 lg:ml-7 lg:h-12 hover:bg-red-600 "
+            onClick={handleSearch}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            Search
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </>
   );
 }
